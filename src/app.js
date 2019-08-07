@@ -13,25 +13,26 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(cors())
+app.options('*', cors())
 app.use(helmet())
 
 app.get('/', (req, res) => {
-    res.send('Hello, world!')
+	res.send('Hello, world!')
 })
 
 app.use(errorHandler)
 
 function errorHandler(error, req, res, next) {
-    let response
+	let response
 
-    if (NODE_ENV === 'production') {
-        response = { error: { message: 'server error' } }
-    }
+	if (NODE_ENV === 'production') {
+		response = { error: { message: 'server error' } }
+	}
 
-    console.error(error)
-    response = { message: error.message, error }
+	console.error(error)
+	response = { message: error.message, error }
 
-    res.status(500).json(response)
+	res.status(500).json(response)
 }
 
 module.exports = app
